@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Founday — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* =========================================================
+   FOUNDATIONS — Tokens extraídos do Figma (Founday)
+   Source of truth: confirmed #0a0a0a, #717182, #e5e7eb (shadcn-like)
+   + inspeção visual dos 4 screens (Home, Step 1, Step 2, Step 3)
+   ========================================================= */
+:root {
+  /* Color — neutral scale */
+  --neutral-0:   #ffffff;
+  --neutral-50:  #f7f7f8;
+  --neutral-100: #f3f3f5;
+  --neutral-150: #ececee;
+  --neutral-200: #e5e7eb;
+  --neutral-300: #d4d4d8;
+  --neutral-400: #a1a1aa;
+  --neutral-500: #717182;
+  --neutral-700: #3f3f46;
+  --neutral-900: #0a0a0a;
+
+  /* Color — brand / semantic */
+  --primary:        #0a0a0a;
+  --primary-hover:  #1f1f22;
+  --primary-fg:     #ffffff;
+  --accent:         #2f6fed;        /* nav/tab active */
+  --accent-soft:    #e7efff;        /* nav icon background */
+  --warning:        #ea580c;        /* "below target" */
+  --warning-soft:   #fff1e9;
+  --success:        #16a34a;
+  --destructive:    #ef4444;
+  --link:           #2f6fed;
+
+  /* Color — surfaces */
+  --bg:             #f5f5f7;
+  --surface:        #ffffff;
+  --surface-muted:  #f7f7f8;
+  --border:         var(--neutral-200);
+  --border-strong:  var(--neutral-300);
+  --ring:           rgba(47,111,237,0.28);
+
+  /* Typography */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Type scale (size / line-height) */
+  --fs-xs:   12px; --lh-xs:   16px;
+  --fs-sm:   13px; --lh-sm:   18px;
+  --fs-base: 14px; --lh-base: 20px;
+  --fs-md:   15px; --lh-md:   22px;
+  --fs-lg:   16px; --lh-lg:   24px;
+  --fs-xl:   20px; --lh-xl:   28px;
+  --fs-2xl:  24px; --lh-2xl:  32px;
+  --fs-3xl:  32px; --lh-3xl:  40px;
+
+  /* Weights */
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+
+  /* Spacing scale (4-point grid) */
+  --s-0:  0px;
+  --s-1:  4px;
+  --s-2:  8px;
+  --s-3:  12px;
+  --s-4:  16px;
+  --s-5:  20px;
+  --s-6:  24px;
+  --s-8:  32px;
+  --s-10: 40px;
+  --s-12: 48px;
+  --s-16: 64px;
+
+  /* Radius */
+  --r-sm:   4px;
+  --r-md:   6px;
+  --r-lg:   8px;
+  --r-xl:   12px;
+  --r-2xl:  16px;
+  --r-full: 9999px;
+
+  /* Elevation */
+  --shadow-xs: 0 1px 2px 0 rgba(16,24,40,0.04);
+  --shadow-sm: 0 1px 3px 0 rgba(16,24,40,0.06), 0 1px 2px -1px rgba(16,24,40,0.05);
+  --shadow-md: 0 4px 12px -2px rgba(16,24,40,0.08), 0 2px 4px -2px rgba(16,24,40,0.04);
+  --shadow-lg: 0 12px 32px -8px rgba(16,24,40,0.12);
+
+  /* Motion */
+  --dur-fast: 120ms;
+  --dur-base: 180ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Layout */
+  --sidebar-w: 256px;
+  --rail-w:    72px;
+}
+
+/* ====== Reset ====== */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  line-height: var(--lh-base);
+  color: var(--neutral-900);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+img { max-width: 100%; display: block; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+input, select, textarea { font-family: inherit; font-size: inherit; }
+
+/* =========================================================
+   DS DOCS — Layout shell (sidebar + main)
+   ========================================================= */
+.ds-shell { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100vh; }
+
+.ds-sidebar {
+  position: sticky; top: 0; align-self: start;
+  height: 100vh; overflow-y: auto;
+  background: var(--neutral-900); color: var(--neutral-200);
+  padding: var(--s-6) var(--s-4); border-right: 1px solid var(--neutral-700);
+}
+.ds-sidebar .brand {
+  display: flex; align-items: center; gap: var(--s-3); margin-bottom: var(--s-8);
+  padding: var(--s-2) var(--s-3);
+}
+.ds-sidebar .brand-mark {
+  width: 32px; height: 32px; border-radius: var(--r-lg);
+  background: linear-gradient(135deg, #2f6fed 0%, #0a0a0a 100%);
+  display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 14px;
+}
+.ds-sidebar .brand-name { font-weight: 600; color: #fff; font-size: var(--fs-lg); }
+.ds-sidebar .brand-sub { color: var(--neutral-400); font-size: var(--fs-xs); }
+
+.ds-sidebar h3 {
+  margin: var(--s-6) var(--s-3) var(--s-2);
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--neutral-400); font-weight: 600;
+}
+.ds-nav a {
+  display: block; padding: 8px 12px; color: var(--neutral-200);
+  text-decoration: none; border-radius: var(--r-md); font-size: var(--fs-base);
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.ds-nav a:hover { background: rgba(255,255,255,0.06); color: #fff; }
+.ds-nav a.active { background: rgba(47,111,237,0.18); color: #fff; }
+
+.ds-main { padding: var(--s-10) var(--s-12); max-width: 1280px; }
+.ds-section { margin-bottom: 96px; scroll-margin-top: 24px; }
+.ds-section > header { margin-bottom: var(--s-6); }
+.ds-section h2 { font-size: var(--fs-2xl); line-height: var(--lh-2xl); font-weight: var(--fw-semibold); margin: 0 0 var(--s-2); }
+.ds-section .lead { color: var(--neutral-500); font-size: var(--fs-lg); line-height: var(--lh-lg); margin: 0; max-width: 60ch; }
+.ds-section h3 { font-size: var(--fs-xl); line-height: var(--lh-xl); font-weight: var(--fw-semibold); margin: var(--s-8) 0 var(--s-3); }
+.ds-section h4 { font-size: var(--fs-base); font-weight: var(--fw-semibold); margin: var(--s-6) 0 var(--s-2); color: var(--neutral-700); text-transform: uppercase; letter-spacing: 0.06em; font-size: 11px; }
+
+.ds-kbd { font-family: var(--font-mono); font-size: 12px; background: var(--neutral-100); padding: 2px 6px; border-radius: var(--r-sm); color: var(--neutral-700); border: 1px solid var(--border); }
+.ds-note { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 12px 16px; border-radius: var(--r-md); font-size: var(--fs-sm); color: var(--neutral-700); margin: var(--s-4) 0; }
+
+/* Panel used to showcase components */
+.ds-panel {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-xl);
+  padding: var(--s-6); box-shadow: var(--shadow-xs);
+}
+.ds-panel + .ds-panel { margin-top: var(--s-4); }
+.ds-panel-caption { font-size: var(--fs-xs); color: var(--neutral-500); margin-top: var(--s-2); letter-spacing: 0.02em; }
+.ds-row { display: flex; flex-wrap: wrap; gap: var(--s-4); align-items: center; }
+
+/* Color swatch */
+.ds-swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--s-3); }
+.ds-swatch {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden;
+}
+.ds-swatch .chip { height: 72px; }
+.ds-swatch .meta { padding: 10px 12px; }
+.ds-swatch .name { font-weight: var(--fw-medium); font-size: var(--fs-sm); }
+.ds-swatch .value { font-family: var(--font-mono); font-size: 11px; color: var(--neutral-500); margin-top: 2px; }
+
+/* Type specimen */
+.ds-type-row { display: grid; grid-template-columns: 200px 1fr; gap: var(--s-6); padding: var(--s-4) 0; border-bottom: 1px dashed var(--border); }
+.ds-type-row:last-child { border: 0; }
+.ds-type-meta { font-family: var(--font-mono); font-size: 12px; color: var(--neutral-500); }
+
+/* Spacing specimen */
+.ds-space-row { display: flex; align-items: center; gap: var(--s-4); padding: var(--s-2) 0; }
+.ds-space-bar { background: var(--accent); height: 12px; border-radius: 3px; }
+.ds-space-row code { font-family: var(--font-mono); font-size: 12px; color: var(--neutral-500); min-width: 92px; }
+
+/* Radius specimen */
+.ds-radius-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: var(--s-3); }
+.ds-radius-box { background: var(--neutral-100); border: 1px solid var(--border); padding: var(--s-4); display: grid; gap: var(--s-2); text-align: center; }
+.ds-radius-box .b { background: var(--neutral-900); height: 56px; }
+.ds-radius-box .label { font-family: var(--font-mono); font-size: 12px; color: var(--neutral-500); }
+
+/* Shadow specimen */
+.ds-shadow-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--s-4); }
+.ds-shadow-box { background: #fff; border-radius: var(--r-lg); padding: var(--s-6); text-align: center; font-family: var(--font-mono); font-size: 12px; color: var(--neutral-500); }
+
+/* =========================================================
+   COMPONENTS — the actual Founday UI library
+   ========================================================= */
+
+/* --- Button --- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 36px; padding: 0 16px;
+  border-radius: var(--r-lg);
+  font-size: var(--fs-base); line-height: 1; font-weight: var(--fw-medium);
+  transition: background var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out);
+  user-select: none;
+}
+.btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
+.btn:active { transform: translateY(0.5px); }
+
+.btn-primary { background: var(--primary); color: var(--primary-fg); }
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-primary:disabled { background: var(--neutral-300); color: var(--neutral-0); cursor: not-allowed; }
+
+.btn-secondary { background: var(--surface); color: var(--neutral-900); border: 1px solid var(--border); }
+.btn-secondary:hover { background: var(--neutral-50); border-color: var(--border-strong); }
+
+.btn-ghost { background: transparent; color: var(--neutral-900); }
+.btn-ghost:hover { background: var(--neutral-100); }
+
+.btn-destructive { background: var(--destructive); color: #fff; }
+.btn-destructive:hover { background: #dc2626; }
+
+.btn-sm { height: 28px; padding: 0 10px; font-size: var(--fs-sm); }
+.btn-lg { height: 44px; padding: 0 20px; font-size: var(--fs-md); }
+.btn-icon { width: 36px; padding: 0; }
+
+/* --- Icon utility (emoji / inline SVG wrapper) --- */
+.icon { width: 16px; height: 16px; flex: 0 0 auto; display: inline-grid; place-items: center; }
+.icon svg { width: 100%; height: 100%; display: block; }
+.icon-sm { width: 14px; height: 14px; }
+.icon-lg { width: 20px; height: 20px; }
+
+/* --- Input --- */
+.input {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%; height: 36px; padding: 0 12px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); font-size: var(--fs-base); color: var(--neutral-900);
+  transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+.input:hover { border-color: var(--border-strong); }
+.input:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--ring); }
+.input input {
+  flex: 1 1 auto; border: none; outline: none; background: transparent;
+  color: inherit; min-width: 0;
+}
+.input input::placeholder { color: var(--neutral-500); }
+.input.input-muted { background: var(--neutral-100); border-color: transparent; }
+.input.input-muted:focus-within { background: var(--surface); border-color: var(--accent); }
+.input.input-error { border-color: var(--destructive); }
+.input.input-error:focus-within { box-shadow: 0 0 0 3px rgba(239,68,68,0.22); }
+
+/* --- Label / Field --- */
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: var(--fs-base); font-weight: var(--fw-medium); color: var(--neutral-900); }
+.field .help { font-size: var(--fs-sm); color: var(--neutral-500); }
+.field .hint { font-size: var(--fs-xs); color: var(--neutral-500); margin-top: 2px; }
+
+/* --- Select (styled native) --- */
+.select {
+  appearance: none; -webkit-appearance: none;
+  width: 100%; height: 36px; padding: 0 36px 0 12px;
+  background: var(--neutral-100) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23717182' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 12px center;
+  border: 1px solid transparent; border-radius: var(--r-lg);
+  font-size: var(--fs-base); color: var(--neutral-900); cursor: pointer;
+}
+.select:hover { border-color: var(--border-strong); }
+.select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--ring); }
+
+/* --- Badge --- */
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 8px; border-radius: var(--r-full);
+  font-size: var(--fs-xs); font-weight: var(--fw-medium); line-height: 1.2;
+}
+.badge-neutral { background: var(--neutral-100); color: var(--neutral-700); }
+.badge-accent  { background: var(--accent-soft); color: var(--accent); }
+.badge-success { background: #e8f6ee; color: var(--success); }
+.badge-warning { background: var(--warning-soft); color: var(--warning); }
+.badge-error   { background: #fee2e2; color: var(--destructive); }
+
+/* --- Checkbox --- */
+.chk {
+  appearance: none; width: 16px; height: 16px; border-radius: var(--r-sm);
+  border: 1px solid var(--border-strong); background: var(--surface); cursor: pointer;
+  display: inline-grid; place-items: center; transition: all var(--dur-fast) var(--ease-out);
+}
+.chk:hover { border-color: var(--neutral-500); }
+.chk:checked {
+  background: var(--primary); border-color: var(--primary);
+}
+.chk:checked::after {
+  content: ""; width: 10px; height: 10px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+
+/* --- Radio ball (Day picker / Now-Future) --- */
+.dot {
+  width: 32px; height: 32px; border-radius: var(--r-full);
+  display: inline-grid; place-items: center;
+  font-size: var(--fs-sm); font-weight: var(--fw-medium);
+  background: var(--neutral-100); color: var(--neutral-700);
+  border: 1px solid transparent; cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+  user-select: none;
+}
+.dot:hover { background: var(--neutral-150); }
+.dot.active { background: var(--neutral-900); color: var(--neutral-0); }
+
+/* --- Segmented control (Now / Future) --- */
+.segmented { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: var(--s-3); }
+.seg-option {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--r-lg);
+  background: var(--surface); cursor: pointer; transition: all var(--dur-fast) var(--ease-out);
+  font-size: var(--fs-base);
+}
+.seg-option:hover { border-color: var(--border-strong); }
+.seg-option.selected { border-color: var(--neutral-900); background: var(--surface); }
+.seg-option .radio-outer {
+  width: 16px; height: 16px; border-radius: var(--r-full); border: 2px solid var(--border-strong);
+  display: grid; place-items: center; flex: 0 0 auto;
+}
+.seg-option.selected .radio-outer { border-color: var(--neutral-900); }
+.seg-option.selected .radio-outer::after {
+  content: ""; width: 8px; height: 8px; background: var(--neutral-900); border-radius: var(--r-full);
+}
+
+/* --- Tabs --- */
+.tabs { display: flex; gap: var(--s-8); border-bottom: 1px solid var(--border); }
+.tab {
+  position: relative; padding: 14px 0; font-size: var(--fs-base);
+  color: var(--neutral-500); font-weight: var(--fw-medium);
+  background: none; border: none; cursor: pointer;
+}
+.tab:hover { color: var(--neutral-900); }
+.tab.active { color: var(--neutral-900); font-weight: var(--fw-semibold); }
+.tab.active::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+  background: var(--accent); border-radius: 2px;
+}
+
+/* --- Card --- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-xs);
+}
+.card .card-hd { padding: var(--s-6) var(--s-6) 0; display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s-4); }
+.card .card-title { font-size: var(--fs-xl); line-height: var(--lh-xl); font-weight: var(--fw-semibold); margin: 0; }
+.card .card-desc { color: var(--neutral-500); font-size: var(--fs-base); margin: 4px 0 0; }
+.card .card-body { padding: var(--s-6); }
+.card hr { border: 0; border-top: 1px solid var(--border); margin: var(--s-6) 0 0; }
+
+/* --- Table --- */
+.table { width: 100%; border-collapse: collapse; }
+.table thead th {
+  text-align: left; font-size: var(--fs-xs); text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--neutral-900); font-weight: var(--fw-semibold);
+  padding: var(--s-3) var(--s-4); border-bottom: 1px solid var(--border);
+}
+.table tbody td {
+  padding: var(--s-4); border-bottom: 1px solid var(--border);
+  font-size: var(--fs-base); color: var(--neutral-900); vertical-align: top;
+}
+.table tbody tr:last-child td { border-bottom: 0; }
+.table tbody tr:hover { background: var(--neutral-50); }
+.table .muted { color: var(--neutral-500); font-size: var(--fs-sm); }
+.table .mono { font-family: var(--font-mono); font-size: 12px; color: var(--neutral-500); }
+
+/* Pagination */
+.pager { display: flex; align-items: center; justify-content: flex-end; gap: var(--s-4); padding: var(--s-4); color: var(--neutral-500); font-size: var(--fs-sm); }
+.pager .rows { display: inline-flex; align-items: center; gap: 6px; }
+.pager .pg-btn { width: 28px; height: 28px; border-radius: var(--r-md); display: grid; place-items: center; color: var(--neutral-500); }
+.pager .pg-btn:hover { background: var(--neutral-100); color: var(--neutral-900); }
+
+/* Avatar */
+.avatar { width: 32px; height: 32px; border-radius: var(--r-full); background: var(--neutral-150); display: grid; place-items: center; font-size: var(--fs-sm); font-weight: var(--fw-medium); color: var(--neutral-700); }
+
+/* =========================================================
+   PRODUCT SCREENS — App chrome (left nav rail + canvas)
+   ========================================================= */
+.app-frame {
+  display: grid; grid-template-columns: var(--rail-w) 1fr;
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-xl); overflow: hidden;
+  min-height: 760px;
+}
+.app-rail {
+  background: var(--surface); border-right: 1px solid var(--border);
+  padding: var(--s-4) 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+}
+.rail-group { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+.rail-btn {
+  width: 40px; height: 40px; border-radius: var(--r-lg);
+  display: grid; place-items: center; color: var(--neutral-500);
+  transition: all var(--dur-fast) var(--ease-out); cursor: pointer;
+}
+.rail-btn:hover { background: var(--neutral-100); color: var(--neutral-900); }
+.rail-btn.active { background: var(--accent-soft); color: var(--accent); }
+.app-canvas { padding: var(--s-6); }
+
+/* Header toolbar for screens */
+.screen-hd {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: var(--s-4); padding: var(--s-4) var(--s-6); border-bottom: 1px solid var(--border);
+}
+.screen-hd h2 { margin: 0; font-size: var(--fs-2xl); font-weight: var(--fw-semibold); letter-spacing: -0.01em; }
+
+/* Step indicator */
+.step-label { font-size: var(--fs-base); color: var(--neutral-500); margin-bottom: var(--s-2); }
+
+/* Warehouse tile */
+.tile {
+  border: 1px solid var(--border); border-radius: var(--r-lg);
+  padding: 14px 16px; background: var(--surface);
+  display: flex; align-items: center; gap: var(--s-3);
+}
+.tile .bullet { width: 8px; height: 8px; border-radius: var(--r-full); background: var(--neutral-900); flex: 0 0 auto; }
+
+/* Product thumbnail placeholder */
+.thumb {
+  width: 44px; height: 44px; border-radius: var(--r-md); flex: 0 0 auto;
+  background: linear-gradient(135deg, #e8e3dc 0%, #d4c9b8 100%);
+}
+.thumb.sneaker { background: linear-gradient(135deg, #c79b60, #e9c48e); }
+.thumb.bag     { background: linear-gradient(135deg, #7a6a55, #b8a288); }
+.thumb.watch   { background: linear-gradient(135deg, #d9dce0, #a5abb3); }
+.thumb.backpack{ background: linear-gradient(135deg, #2c3a56, #52678c); }
+
+/* Unit chip (inline qty) */
+.qty-chip {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 56px; height: 28px; padding: 0 10px;
+  border: 1px solid var(--border); border-radius: var(--r-md);
+  font-size: var(--fs-sm); font-variant-numeric: tabular-nums; background: var(--surface);
+}
+
+/* Empty state / placeholders */
+.muted { color: var(--neutral-500); }
+.warn  { color: var(--warning); }
+.ok    { color: var(--success); }
+
+/* =========================================================
+   Code block
+   ========================================================= */
+.code {
+  background: var(--neutral-900); color: #e7eaf0;
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-md); font-family: var(--font-mono);
+  font-size: 12px; line-height: 1.6; overflow-x: auto;
+}
+.code .k { color: #b998ff; }
+.code .s { color: #6cd2a6; }
+.code .c { color: #7a8699; font-style: italic; }
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+@media (max-width: 960px) {
+  .ds-shell { grid-template-columns: 1fr; }
+  .ds-sidebar { position: static; height: auto; }
+  .ds-main { padding: var(--s-6); }
+}
+</style>
+</head>
+<body>
+
+<div class="ds-shell">
+
+  <!-- ============== SIDEBAR ============== -->
+  <aside class="ds-sidebar">
+    <div class="brand">
+      <div class="brand-mark">F</div>
+      <div>
+        <div class="brand-name">Founday</div>
+        <div class="brand-sub">Design System · v0.1</div>
+      </div>
+    </div>
+
+    <h3>Overview</h3>
+    <nav class="ds-nav">
+      <a href="#overview" class="active">Introduction</a>
+      <a href="#principles">Principles</a>
+    </nav>
+
+    <h3>Foundations</h3>
+    <nav class="ds-nav">
+      <a href="#colors">Colors</a>
+      <a href="#typography">Typography</a>
+      <a href="#spacing">Spacing</a>
+      <a href="#radius">Radius</a>
+      <a href="#shadows">Elevation</a>
+      <a href="#icons">Icons</a>
+    </nav>
+
+    <h3>Components</h3>
+    <nav class="ds-nav">
+      <a href="#c-button">Button</a>
+      <a href="#c-input">Input & Field</a>
+      <a href="#c-select">Select</a>
+      <a href="#c-checkbox">Checkbox</a>
+      <a href="#c-badge">Badge</a>
+      <a href="#c-segmented">Segmented / Day Picker</a>
+      <a href="#c-tabs">Tabs</a>
+      <a href="#c-card">Card</a>
+      <a href="#c-table">Table</a>
+      <a href="#c-nav">Nav Rail</a>
+    </nav>
+
+    <h3>Screens</h3>
+    <nav class="ds-nav">
+      <a href="#s-home">Home · Replenishment</a>
+      <a href="#s-step1">Step 1 · New Replenishment</a>
+      <a href="#s-step2">Step 2 · Configuration</a>
+      <a href="#s-step3">Step 3 · Review & Submit</a>
+    </nav>
+  </aside>
+
+  <!-- ============== MAIN ============== -->
+  <main class="ds-main">
+
+    <!-- Overview -->
+    <section id="overview" class="ds-section">
+      <header>
+        <h2>Founday Design System</h2>
+        <p class="lead">
+          Sistema de design interativo extraído do arquivo Figma <span class="ds-kbd">W32edVsk3tnXN7dFKF0lvE</span>
+          via MCP. Cobre foundations, componentes e os 4 fluxos do módulo <strong>Replenishment</strong> —
+          prontos para handoff e implementação.
+        </p>
+      </header>
+
+      <div class="ds-row" style="margin-top: var(--s-6); gap: var(--s-3);">
+        <div class="badge badge-accent">Foundations: 6</div>
+        <div class="badge badge-accent">Components: 10</div>
+        <div class="badge badge-accent">Screens: 4</div>
+        <div class="badge badge-neutral">Font: Inter</div>
+        <div class="badge badge-neutral">Grid: 4-point</div>
+      </div>
+
+      <div class="ds-panel" style="margin-top: var(--s-6);">
+        <h4>Objetivos</h4>
+        <ul style="margin: 0; padding-left: 18px; color: var(--neutral-700); line-height: 1.7;">
+          <li>Consolidar a linguagem visual do Founday em tokens reutilizáveis.</li>
+          <li>Reduzir retrabalho entre Design e Eng com especificação executável (HTML + CSS vars).</li>
+          <li>Servir de referência para auditorias heurísticas, critiques e onboarding de novos designers.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="principles" class="ds-section">
+      <header>
+        <h2>Princípios</h2>
+        <p class="lead">Clareza, hierarquia e densidade de dados — nessa ordem.</p>
+      </header>
+      <div class="ds-swatch-grid">
+        <div class="ds-panel">
+          <h4>01 · Clareza antes de decoração</h4>
+          <p class="muted" style="margin: 0; font-size: var(--fs-sm);">Tipografia neutra, paleta monocromática, acentos funcionais. Cor significa estado, não estilo.</p>
+        </div>
+        <div class="ds-panel">
+          <h4>02 · Densidade com respiro</h4>
+          <p class="muted" style="margin: 0; font-size: var(--fs-sm);">Tabelas densas (row 56px), cards com padding 24px. Users fazem muita leitura scan — preserve quiet zones.</p>
+        </div>
+        <div class="ds-panel">
+          <h4>03 · Ação sempre visível</h4>
+          <p class="muted" style="margin: 0; font-size: var(--fs-sm);">CTAs primários em preto sólido, sempre no canto superior direito. Uma única ação primária por tela.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== FOUNDATIONS ====== -->
+    <section id="colors" class="ds-section">
+      <header>
+        <h2>Colors</h2>
+        <p class="lead">Paleta neutra com acentos funcionais. Base confirmada no Figma: <code>#0a0a0a</code>, <code>#717182</code>, <code>#e5e7eb</code>.</p>
+      </header>
+
+      <h4>Neutral</h4>
+      <div class="ds-swatch-grid" id="sw-neutral"></div>
+
+      <h4>Semantic</h4>
+      <div class="ds-swatch-grid" id="sw-semantic"></div>
+
+      <h4>Surfaces</h4>
+      <div class="ds-swatch-grid" id="sw-surface"></div>
+    </section>
+
+    <section id="typography" class="ds-section">
+      <header>
+        <h2>Typography</h2>
+        <p class="lead">Inter 400/500/600. Escala apertada (12 → 32), line-height generoso para leitura longa.</p>
+      </header>
+      <div class="ds-panel">
+        <div class="ds-type-row"><div><div class="ds-type-meta">display / 32 · 40 · 600</div></div><div style="font-size: 32px; line-height: 40px; font-weight: 600;">Fall Season 2024</div></div>
+        <div class="ds-type-row"><div><div class="ds-type-meta">h1 / 24 · 32 · 600</div></div><div style="font-size: 24px; line-height: 32px; font-weight: 600;">Replenishment</div></div>
+        <div class="ds-type-row"><div><div class="ds-type-meta">h2 / 20 · 28 · 600</div></div><div style="font-size: 20px; line-height: 28px; font-weight: 600;">New Replenishment</div></div>
+        <div class="ds-type-row"><div><div class="ds-type-meta">body-lg / 16 · 24 · 400</div></div><div style="font-size: 16px; line-height: 24px;">Configure your inventory request settings and schedule.</div></div>
+        <div class="ds-type-row"><div><div class="ds-type-meta">body / 14 · 20 · 400 (default)</div></div><div style="font-size: 14px; line-height: 20px;">Distribution Center A · 2,847 units ready to ship.</div></div>
+        <div class="ds-type-row"><div><div class="ds-type-meta">label / 14 · 20 · 500</div></div><div style="font-size: 14px; line-height: 20px; font-weight: 500;">Name of request</div></div>
+        <div class="ds-type-row"><div><div class="ds-type-meta">caption / 12 · 16 · 500 · uppercase</div></div><div style="font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;">Current Warehouse</div></div>
+        <div class="ds-type-row"><div><div class="ds-type-meta">micro / 12 · 16 · 400</div></div><div style="font-size: 12px; line-height: 16px; color: var(--neutral-500);">WIR2024001 · 1-50 of 128</div></div>
+      </div>
+    </section>
+
+    <section id="spacing" class="ds-section">
+      <header>
+        <h2>Spacing</h2>
+        <p class="lead">Grid de 4pt. Use os tokens, nunca valores avulsos.</p>
+      </header>
+      <div class="ds-panel">
+        <div class="ds-space-row"><code>--s-1 · 4px</code><div class="ds-space-bar" style="width: 4px;"></div></div>
+        <div class="ds-space-row"><code>--s-2 · 8px</code><div class="ds-space-bar" style="width: 8px;"></div></div>
+        <div class="ds-space-row"><code>--s-3 · 12px</code><div class="ds-space-bar" style="width: 12px;"></div></div>
+        <div class="ds-space-row"><code>--s-4 · 16px</code><div class="ds-space-bar" style="width: 16px;"></div></div>
+        <div class="ds-space-row"><code>--s-5 · 20px</code><div class="ds-space-bar" style="width: 20px;"></div></div>
+        <div class="ds-space-row"><code>--s-6 · 24px</code><div class="ds-space-bar" style="width: 24px;"></div></div>
+        <div class="ds-space-row"><code>--s-8 · 32px</code><div class="ds-space-bar" style="width: 32px;"></div></div>
+        <div class="ds-space-row"><code>--s-10 · 40px</code><div class="ds-space-bar" style="width: 40px;"></div></div>
+        <div class="ds-space-row"><code>--s-12 · 48px</code><div class="ds-space-bar" style="width: 48px;"></div></div>
+        <div class="ds-space-row"><code>--s-16 · 64px</code><div class="ds-space-bar" style="width: 64px;"></div></div>
+      </div>
+      <p class="ds-panel-caption">Padding de card = <code>--s-6</code>. Gap entre seções = <code>--s-8</code>. Gutter de grid = <code>--s-6</code>.</p>
+    </section>
+
+    <section id="radius" class="ds-section">
+      <header>
+        <h2>Radius</h2>
+        <p class="lead">Suaves. <code>4–12px</code> para elementos, <code>full</code> para avatars e dots.</p>
+      </header>
+      <div class="ds-radius-grid">
+        <div class="ds-radius-box"><div class="b" style="border-radius: 4px;"></div><div class="label">--r-sm · 4</div></div>
+        <div class="ds-radius-box"><div class="b" style="border-radius: 6px;"></div><div class="label">--r-md · 6</div></div>
+        <div class="ds-radius-box"><div class="b" style="border-radius: 8px;"></div><div class="label">--r-lg · 8</div></div>
+        <div class="ds-radius-box"><div class="b" style="border-radius: 12px;"></div><div class="label">--r-xl · 12</div></div>
+        <div class="ds-radius-box"><div class="b" style="border-radius: 16px;"></div><div class="label">--r-2xl · 16</div></div>
+        <div class="ds-radius-box"><div class="b" style="border-radius: 9999px; height: 32px; width: 32px; margin: 12px auto;"></div><div class="label">--r-full</div></div>
+      </div>
+    </section>
+
+    <section id="shadows" class="ds-section">
+      <header>
+        <h2>Elevation</h2>
+        <p class="lead">Quatro níveis. Superfícies base ficam no <em>xs</em>; popovers usam <em>lg</em>.</p>
+      </header>
+      <div class="ds-shadow-grid">
+        <div class="ds-shadow-box" style="box-shadow: var(--shadow-xs);">shadow-xs</div>
+        <div class="ds-shadow-box" style="box-shadow: var(--shadow-sm);">shadow-sm</div>
+        <div class="ds-shadow-box" style="box-shadow: var(--shadow-md);">shadow-md</div>
+        <div class="ds-shadow-box" style="box-shadow: var(--shadow-lg);">shadow-lg</div>
+      </div>
+    </section>
+
+    <section id="icons" class="ds-section">
+      <header>
+        <h2>Icons</h2>
+        <p class="lead">Stroke 1.5, cantos arredondados, tamanhos 14/16/20. Fonte: Lucide (feather-like).</p>
+      </header>
+      <div class="ds-panel">
+        <div class="ds-row" style="gap: var(--s-6);">
+          <div style="text-align:center;"><span class="icon icon-lg" data-icon="home"></span><div class="ds-type-meta">home</div></div>
+          <div style="text-align:center;"><span class="icon icon-lg" data-icon="grid"></span><div class="ds-type-meta">grid</div></div>
+          <div style="text-align:center;"><span class="icon icon-lg" data-icon="users"></span><div class="ds-type-meta">users</div></div>
+          <div style="text-align:center;"><span class="icon icon-lg" data-icon="settings"></span><div class="ds-type-meta">settings</div></div>
+          <div style="text-align:center;"><span class="icon icon-lg" data-icon="search"></span><div class="ds-type-meta">search</div></div>
+          <div style="text-align:center;"><span class="icon icon-lg" data-icon="trash"></span><div class="ds-type-meta">trash</div></div>
+          <div style="text-align:center;"><span class="icon icon-lg" data-icon="chevron-left"></span><div class="ds-type-meta">chevron-left</div></div>
+          <div style="text-align:center;"><span class="icon icon-lg" data-icon="chevron-right"></span><div class="ds-type-meta">chevron-right</div></div>
+          <div style="text-align:center;"><span class="icon icon-lg" data-icon="chevron-down"></span><div class="ds-type-meta">chevron-down</div></div>
+          <div style="text-align:center;"><span class="icon icon-lg" data-icon="calendar"></span><div class="ds-type-meta">calendar</div></div>
+          <div style="text-align:center;"><span class="icon icon-lg" data-icon="share"></span><div class="ds-type-meta">share</div></div>
+          <div style="text-align:center;"><span class="icon icon-lg" data-icon="download"></span><div class="ds-type-meta">download</div></div>
+          <div style="text-align:center;"><span class="icon icon-lg" data-icon="arrow-left"></span><div class="ds-type-meta">arrow-left</div></div>
+          <div style="text-align:center;"><span class="icon icon-lg" data-icon="x"></span><div class="ds-type-meta">x</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== COMPONENTS ====== -->
+    <section id="c-button" class="ds-section">
+      <header><h2>Button</h2><p class="lead">Três variants: primary (preto), secondary (bordada), ghost. Tamanhos sm / md / lg.</p></header>
+
+      <div class="ds-panel">
+        <h4>Variants</h4>
+        <div class="ds-row">
+          <button class="btn btn-primary">New Replenishment</button>
+          <button class="btn btn-secondary">Cancel</button>
+          <button class="btn btn-ghost">Learn more</button>
+          <button class="btn btn-destructive">Delete</button>
+          <button class="btn btn-primary" disabled>Disabled</button>
+        </div>
+        <h4>Sizes</h4>
+        <div class="ds-row">
+          <button class="btn btn-primary btn-sm">Small</button>
+          <button class="btn btn-primary">Medium (default)</button>
+          <button class="btn btn-primary btn-lg">Large</button>
+          <button class="btn btn-secondary btn-icon" aria-label="Settings"><span class="icon" data-icon="settings"></span></button>
+        </div>
+        <h4>With icon</h4>
+        <div class="ds-row">
+          <button class="btn btn-primary"><span class="icon" data-icon="plus"></span>New Replenishment</button>
+          <button class="btn btn-secondary"><span class="icon" data-icon="download"></span>Export</button>
+          <button class="btn btn-ghost"><span class="icon" data-icon="arrow-left"></span>Return</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="c-input" class="ds-section">
+      <header><h2>Input & Field</h2><p class="lead">Altura 36, radius 8, borda sutil. Estado de foco com ring azul.</p></header>
+      <div class="ds-panel">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-6); max-width: 720px;">
+          <div class="field">
+            <label>Name of request</label>
+            <div class="input"><input placeholder="ex. Q4 Product Restock Initiative" /></div>
+          </div>
+          <div class="field">
+            <label>Search</label>
+            <div class="input input-muted">
+              <span class="icon" data-icon="search" style="color: var(--neutral-500);"></span>
+              <input placeholder="search..." />
+            </div>
+          </div>
+          <div class="field">
+            <label>Date</label>
+            <div class="input">
+              <input value="12/15/2024" />
+              <span class="icon" data-icon="calendar" style="color: var(--neutral-500);"></span>
+            </div>
+            <span class="help">Set an end date to stop the schedule, or leave empty to keep it repeating indefinitely.</span>
+          </div>
+          <div class="field">
+            <label>Error state</label>
+            <div class="input input-error"><input value="invalid@" /></div>
+            <span class="help" style="color: var(--destructive);">Enter a valid email address.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="c-select" class="ds-section">
+      <header><h2>Select</h2><p class="lead">Mesma altura do input. Background muted quando inativo (cf. Repeats, Facility Type).</p></header>
+      <div class="ds-panel">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-6); max-width: 720px;">
+          <div class="field">
+            <label>Repeats</label>
+            <select class="select"><option>Weekly</option><option>Daily</option><option>Monthly</option></select>
+          </div>
+          <div class="field">
+            <label>Facility Type</label>
+            <select class="select"><option>Select type…</option><option>Warehouse</option><option>Retail</option></select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="c-checkbox" class="ds-section">
+      <header><h2>Checkbox</h2></header>
+      <div class="ds-panel">
+        <div class="ds-row">
+          <label style="display:inline-flex; gap: 8px; align-items:center;"><input type="checkbox" class="chk" /> Unchecked</label>
+          <label style="display:inline-flex; gap: 8px; align-items:center;"><input type="checkbox" class="chk" checked /> Checked</label>
+          <label style="display:inline-flex; gap: 8px; align-items:center; opacity:.5;"><input type="checkbox" class="chk" disabled /> Disabled</label>
+        </div>
+      </div>
+    </section>
+
+    <section id="c-badge" class="ds-section">
+      <header><h2>Badge</h2><p class="lead">Pílulas para contagem, status e indicadores inline.</p></header>
+      <div class="ds-panel">
+        <div class="ds-row">
+          <span class="badge badge-neutral">Default</span>
+          <span class="badge badge-accent">6 users selected</span>
+          <span class="badge badge-success">Submitted</span>
+          <span class="badge badge-warning">0% below target</span>
+          <span class="badge badge-error">Critical</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="c-segmented" class="ds-section">
+      <header><h2>Segmented / Day Picker</h2><p class="lead">Dois controles compactos usados no formulário de agendamento.</p></header>
+      <div class="ds-panel">
+        <h4>Segmented — Run request</h4>
+        <div class="segmented" style="max-width: 520px;" data-component="run-when">
+          <div class="seg-option selected" data-val="now"><span class="radio-outer"></span> Now</div>
+          <div class="seg-option" data-val="future"><span class="radio-outer"></span> Future</div>
+        </div>
+
+        <h4>Day picker — Repeats every</h4>
+        <div class="ds-row" style="gap: var(--s-2);" data-component="days">
+          <div class="dot" data-day="M">M</div>
+          <div class="dot active" data-day="T">T</div>
+          <div class="dot active" data-day="W">W</div>
+          <div class="dot active" data-day="Th">T</div>
+          <div class="dot" data-day="F">F</div>
+          <div class="dot" data-day="S">S</div>
+          <div class="dot" data-day="Su">S</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="c-tabs" class="ds-section">
+      <header><h2>Tabs</h2><p class="lead">Indicador com underline azul. Estado <em>active</em> em peso semibold.</p></header>
+      <div class="ds-panel">
+        <div class="tabs" data-component="tabs">
+          <button class="tab active" data-tab="ongoing">Ongoing</button>
+          <button class="tab" data-tab="upcoming">Upcoming</button>
+          <button class="tab" data-tab="submitted">Submitted</button>
+          <button class="tab" data-tab="archived">Archived</button>
+        </div>
+        <p class="muted" style="font-size: var(--fs-sm); margin-top: var(--s-4);" id="tab-state">Active tab: <code>ongoing</code>. Clique nos tabs para alternar.</p>
+      </div>
+    </section>
+
+    <section id="c-card" class="ds-section">
+      <header><h2>Card</h2><p class="lead">Container base de qualquer conteúdo — radius 12, border sutil, padding 24.</p></header>
+      <div class="card" style="max-width: 680px;">
+        <div class="card-hd">
+          <div>
+            <h3 class="card-title">Configuration Setup</h3>
+            <p class="card-desc">Select the warehouses and inventory items to include in your workflow.</p>
+          </div>
+          <button class="btn btn-primary">Continue</button>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <label>Choose your primary warehouse</label>
+            <span class="help">This warehouse will serve as the main distribution point.</span>
+            <div class="tile" style="margin-top: var(--s-2); max-width: 320px;">
+              <span class="bullet"></span> Distribution Center Alpha
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="c-table" class="ds-section">
+      <header><h2>Table</h2><p class="lead">Alta densidade, hover row, cabeçalho em caixa alta 12px.</p></header>
+      <div class="card">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th><th>Created</th><th>Current Warehouse</th><th>Locations</th><th>Est. Sales Increase</th><th>Replen Units</th>
+            </tr>
+          </thead>
+          <tbody id="demo-table">
+            <!-- populated by JS -->
+          </tbody>
+        </table>
+        <div class="pager">
+          <span>Rows per page:</span>
+          <span class="rows">50 <span class="icon" data-icon="chevron-right"></span></span>
+          <span>1-50 of 128</span>
+          <button class="pg-btn"><span class="icon" data-icon="chevron-left"></span></button>
+          <button class="pg-btn"><span class="icon" data-icon="chevron-right"></span></button>
+        </div>
+      </div>
+    </section>
+
+    <section id="c-nav" class="ds-section">
+      <header><h2>Nav Rail</h2><p class="lead">Barra lateral colapsada — 72px. Ícone ativo em badge azul claro.</p></header>
+      <div class="ds-panel" style="padding: 0; overflow: hidden;">
+        <div style="display:flex;">
+          <aside class="app-rail" style="height: 420px;">
+            <div class="rail-group">
+              <button class="rail-btn"><span class="icon icon-lg" data-icon="home"></span></button>
+              <button class="rail-btn active"><span class="icon icon-lg" data-icon="grid"></span></button>
+              <button class="rail-btn"><span class="icon icon-lg" data-icon="users"></span></button>
+              <button class="rail-btn"><span class="icon icon-lg" data-icon="settings"></span></button>
+            </div>
+            <div class="rail-group">
+              <span class="avatar">JD</span>
+            </div>
+          </aside>
+          <div style="flex:1; padding: var(--s-6); color: var(--neutral-500); font-size: var(--fs-sm);">
+            <strong>Anatomy:</strong> largura 72px · padding vertical 16px · item 40×40 radius 8 · active state <code>--accent-soft</code> + ícone <code>--accent</code>. Separação entre top-group e avatar com <code>justify-content: space-between</code>.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== SCREENS ====== -->
+    <section id="s-home" class="ds-section">
+      <header><h2>Screen · Replenishment (Home)</h2><p class="lead">Lista de solicitações com tabs de status, search e CTA primário.</p></header>
+      <div class="app-frame">
+        <aside class="app-rail">
+          <div class="rail-group">
+            <button class="rail-btn"><span class="icon icon-lg" data-icon="home"></span></button>
+            <button class="rail-btn active"><span class="icon icon-lg" data-icon="grid"></span></button>
+            <button class="rail-btn"><span class="icon icon-lg" data-icon="users"></span></button>
+            <button class="rail-btn"><span class="icon icon-lg" data-icon="settings"></span></button>
+          </div>
+          <span class="avatar">JD</span>
+        </aside>
+        <div class="app-canvas">
+          <div class="card">
+            <div class="screen-hd">
+              <h2>Replenishment</h2>
+              <button class="btn btn-primary">New Replenishment</button>
+            </div>
+            <div style="padding: 0 var(--s-6);">
+              <div class="tabs" style="margin-top: var(--s-2);">
+                <button class="tab active">Ongoing</button>
+                <button class="tab">Upcoming</button>
+                <button class="tab">Submitted</button>
+                <button class="tab">Archived</button>
+                <div style="margin-left:auto; align-self:center;"><button class="btn btn-icon btn-ghost" aria-label="Archive"><span class="icon" data-icon="trash"></span></button></div>
+              </div>
+            </div>
+            <div style="padding: var(--s-5) var(--s-6) var(--s-4);">
+              <div class="input input-muted" style="max-width: 280px;">
+                <span class="icon" data-icon="search" style="color: var(--neutral-500);"></span>
+                <input placeholder="search..." />
+              </div>
+            </div>
+            <table class="table">
+              <thead>
+                <tr><th>Name</th><th>Created</th><th>Current Warehouse</th><th>Locations</th><th>Est. Sales Increase</th><th>Replen Units</th></tr>
+              </thead>
+              <tbody id="home-table"></tbody>
+            </table>
+            <div class="pager">
+              <span>Rows per page:</span>
+              <span class="rows">50 <span class="icon" data-icon="chevron-right"></span></span>
+              <span>1-50 of 128</span>
+              <button class="pg-btn"><span class="icon" data-icon="chevron-left"></span></button>
+              <button class="pg-btn"><span class="icon" data-icon="chevron-right"></span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="s-step1" class="ds-section">
+      <header><h2>Screen · Step 1 · New Replenishment</h2><p class="lead">Formulário de agendamento com scope seletivo.</p></header>
+      <div class="app-frame">
+        <aside class="app-rail">
+          <div class="rail-group">
+            <button class="rail-btn"><span class="icon icon-lg" data-icon="home"></span></button>
+            <button class="rail-btn active"><span class="icon icon-lg" data-icon="grid"></span></button>
+            <button class="rail-btn"><span class="icon icon-lg" data-icon="users"></span></button>
+            <button class="rail-btn"><span class="icon icon-lg" data-icon="settings"></span></button>
+          </div>
+          <span class="avatar">JD</span>
+        </aside>
+        <div class="app-canvas">
+          <div class="card" style="max-width: 820px; margin: 0 auto;">
+            <div class="card-body">
+              <button class="btn btn-ghost btn-sm" style="padding-left: 0;"><span class="icon" data-icon="arrow-left"></span>Return</button>
+              <p class="step-label" style="margin-top: var(--s-4);">Step 1 of 2</p>
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; gap: var(--s-4);">
+                <div>
+                  <h3 class="card-title">New Replenishment</h3>
+                  <p class="card-desc">Configure your inventory request settings and schedule.</p>
+                </div>
+                <button class="btn btn-primary">Continue to scope selection</button>
+              </div>
+
+              <div class="field" style="margin-top: var(--s-8);">
+                <label>Name of request</label>
+                <div class="input"><input placeholder="ex. Q4 Product Restock Initiative" /></div>
+              </div>
+              <hr style="margin: var(--s-6) 0;">
+
+              <div class="field">
+                <label>Run request</label>
+                <div class="segmented" style="margin-top: var(--s-2);">
+                  <div class="seg-option selected"><span class="radio-outer"></span> Now</div>
+                  <div class="seg-option"><span class="radio-outer"></span> Future</div>
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns: 240px 1fr; gap: var(--s-6); margin-top: var(--s-6);">
+                <div class="field">
+                  <label>Repeats</label>
+                  <select class="select"><option>Weekly</option><option>Daily</option><option>Monthly</option></select>
+                </div>
+                <div class="field">
+                  <label>Repeats every</label>
+                  <div class="ds-row" style="gap: var(--s-2);">
+                    <div class="dot">M</div>
+                    <div class="dot active">T</div>
+                    <div class="dot active">W</div>
+                    <div class="dot active">T</div>
+                    <div class="dot">F</div>
+                    <div class="dot">S</div>
+                    <div class="dot">S</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field" style="margin-top: var(--s-6);">
+                <label>Time</label>
+                <div style="display:grid; grid-template-columns: 180px 180px; gap: var(--s-3);">
+                  <select class="select"><option>07:30</option><option>08:00</option><option>09:00</option></select>
+                  <select class="select"><option>GMT-03:00 · BRT</option><option>UTC</option></select>
+                </div>
+              </div>
+
+              <div class="field" style="margin-top: var(--s-6);">
+                <label>End date</label>
+                <span class="help">Set an end date to stop the schedule, or leave empty to keep it repeating indefinitely.</span>
+                <div class="input" style="max-width: 320px;">
+                  <input value="12/15/2024" />
+                  <span class="icon" data-icon="calendar" style="color: var(--neutral-500);"></span>
+                </div>
+              </div>
+              <hr style="margin: var(--s-6) 0;">
+
+              <div class="field">
+                <label>Send email to other users once scheduled requests are created.</label>
+                <div class="input" style="max-width: 520px;">
+                  <span class="badge badge-accent">6 users selected <span class="icon" data-icon="x" style="font-size:10px;"></span></span>
+                  <input placeholder="search…" />
+                  <span class="icon" data-icon="chevron-down" style="color: var(--neutral-500);"></span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="s-step2" class="ds-section">
+      <header><h2>Screen · Step 2 · Configuration Setup</h2><p class="lead">Seleciona warehouse primário, cobertura geográfica e produtos.</p></header>
+      <div class="app-frame">
+        <aside class="app-rail">
+          <div class="rail-group">
+            <button class="rail-btn"><span class="icon icon-lg" data-icon="home"></span></button>
+            <button class="rail-btn active"><span class="icon icon-lg" data-icon="grid"></span></button>
+            <button class="rail-btn"><span class="icon icon-lg" data-icon="users"></span></button>
+            <button class="rail-btn"><span class="icon icon-lg" data-icon="settings"></span></button>
+          </div>
+          <span class="avatar">JD</span>
+        </aside>
+        <div class="app-canvas">
+          <div class="card" style="max-width: 920px; margin: 0 auto;">
+            <div class="card-body">
+              <button class="btn btn-ghost btn-sm" style="padding-left: 0;"><span class="icon" data-icon="chevron-left" style="color: var(--accent);"></span><span style="color: var(--neutral-500);">Step 2 of 2</span></button>
+
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; gap: var(--s-4); margin-top: var(--s-4);">
+                <div>
+                  <h3 class="card-title">Configuration Setup</h3>
+                  <p class="card-desc">Select the warehouses and inventory items to include in your workflow.</p>
+                </div>
+                <button class="btn btn-primary">Continue</button>
+              </div>
+
+              <div class="field" style="margin-top: var(--s-8);">
+                <label>Choose your primary warehouse</label>
+                <span class="help">This warehouse will serve as the main distribution point.</span>
+                <div class="tile" style="margin-top: var(--s-2); max-width: 320px;">
+                  <span class="bullet"></span> Distribution Center Alpha
+                </div>
+              </div>
+              <hr style="margin: var(--s-6) 0;">
+
+              <h4 style="text-transform:none; letter-spacing:normal; font-size: var(--fs-base); color: var(--neutral-900); margin: 0 0 var(--s-4);">Define geographic coverage</h4>
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap: var(--s-4);">
+                <div class="field"><label>Facility Type</label><select class="select"><option>Select type…</option></select></div>
+                <div class="field"><label>Territory</label><select class="select"><option>Select territory…</option></select></div>
+                <div class="field"><label>Market</label><select class="select"><option>Select market…</option></select></div>
+                <div class="field"><label>Sites</label><select class="select"><option>Select sites…</option></select></div>
+              </div>
+              <hr style="margin: var(--s-6) 0;">
+
+              <h4 style="text-transform:none; letter-spacing:normal; font-size: var(--fs-base); color: var(--neutral-900); margin: 0 0 var(--s-4);">Select products</h4>
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap: var(--s-4);">
+                <div class="field"><label>Category</label><select class="select"><option>Select category…</option></select></div>
+                <div class="field"><label>Subcategory</label><select class="select"><option>Select subcategory…</option></select></div>
+                <div class="field"><label>Collection</label><select class="select"><option>Select collection…</option></select></div>
+                <div class="field"><label>Items</label><select class="select"><option>Select items…</option></select></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="s-step3" class="ds-section">
+      <header><h2>Screen · Step 3 · Review & Submit</h2><p class="lead">Tela de revisão com coverage pre/pós replenishment.</p></header>
+      <div class="app-frame">
+        <aside class="app-rail">
+          <div class="rail-group">
+            <button class="rail-btn"><span class="icon icon-lg" data-icon="home"></span></button>
+            <button class="rail-btn active"><span class="icon icon-lg" data-icon="grid"></span></button>
+            <button class="rail-btn"><span class="icon icon-lg" data-icon="users"></span></button>
+            <button class="rail-btn"><span class="icon icon-lg" data-icon="settings"></span></button>
+          </div>
+          <span class="avatar">JD</span>
+        </aside>
+        <div class="app-canvas">
+          <div class="card" style="margin-bottom: var(--s-4);">
+            <div class="screen-hd">
+              <div>
+                <h2 style="font-size: 20px;">Fall Season 2024</h2>
+                <p class="muted" style="margin: 2px 0 0; font-size: var(--fs-sm);">Central Distribution Hub</p>
+              </div>
+              <div class="ds-row" style="gap: var(--s-2);">
+                <button class="btn btn-icon btn-ghost"><span class="icon" data-icon="share"></span></button>
+                <button class="btn btn-icon btn-ghost"><span class="icon" data-icon="download"></span></button>
+                <button class="btn btn-primary">Submit Replenishment</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width: 40px;"><input type="checkbox" class="chk"/></th>
+                  <th>Product Details</th>
+                  <th>Current Units</th>
+                  <th>Current Coverage</th>
+                  <th>Replen Units</th>
+                  <th>Coverage after Replen</th>
+                </tr>
+              </thead>
+              <tbody id="step3-table"></tbody>
+            </table>
+            <div class="pager">
+              <span>Rows per page:</span>
+              <span class="rows">50</span>
+              <span style="margin-left: auto;">1-4 of 620</span>
+              <button class="pg-btn"><span class="icon" data-icon="chevron-left"></span></button>
+              <button class="pg-btn"><span class="icon" data-icon="chevron-right"></span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ds-section" style="margin-bottom: 48px;">
+      <div class="ds-note">
+        <strong>Fonte dos tokens:</strong> Figma MCP (<code>W32edVsk3tnXN7dFKF0lvE</code>) — 4 top-level frames analisados (1:112 Home, 1:2 Step 1, 1:405 Step 2, 1:513 Step 3) + 1 symbol (Menu, 1:377). Vocabulário shadcn/radix detectado. Cores base confirmadas: <code>#0a0a0a</code>, <code>#717182</code>, <code>#e5e7eb</code>. Paleta semântica inferida pelos screenshots (warning, accent, success).
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+/* =========================================================
+   Icons (Lucide-style, inline SVG — só os usados)
+   ========================================================= */
+const ICONS = {
+  "home":    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1V9.5Z"/></svg>',
+  "grid":    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>',
+  "users":   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  "settings":'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82h0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/><circle cx="12" cy="12" r="3"/></svg>',
+  "search":  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
+  "trash":   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="m19 6-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>',
+  "chevron-left":  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>',
+  "chevron-right": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>',
+  "chevron-down":  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>',
+  "calendar": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+  "share":    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>',
+  "download": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+  "arrow-left": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>',
+  "plus":     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+  "x":        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
+};
+
+document.querySelectorAll("[data-icon]").forEach(el => {
+  const k = el.getAttribute("data-icon");
+  if (ICONS[k]) el.innerHTML = ICONS[k];
+});
+
+/* =========================================================
+   Color swatches
+   ========================================================= */
+const NEUTRAL = [
+  ["--neutral-0","#ffffff","White"],
+  ["--neutral-50","#f7f7f8","Neutral 50"],
+  ["--neutral-100","#f3f3f5","Neutral 100"],
+  ["--neutral-150","#ececee","Neutral 150"],
+  ["--neutral-200","#e5e7eb","Neutral 200"],
+  ["--neutral-300","#d4d4d8","Neutral 300"],
+  ["--neutral-400","#a1a1aa","Neutral 400"],
+  ["--neutral-500","#717182","Neutral 500"],
+  ["--neutral-700","#3f3f46","Neutral 700"],
+  ["--neutral-900","#0a0a0a","Neutral 900"]
+];
+const SEMANTIC = [
+  ["--primary","#0a0a0a","Primary"],
+  ["--primary-hover","#1f1f22","Primary · Hover"],
+  ["--accent","#2f6fed","Accent"],
+  ["--accent-soft","#e7efff","Accent · Soft"],
+  ["--warning","#ea580c","Warning"],
+  ["--warning-soft","#fff1e9","Warning · Soft"],
+  ["--success","#16a34a","Success"],
+  ["--destructive","#ef4444","Destructive"]
+];
+const SURFACE = [
+  ["--bg","#f5f5f7","App · Background"],
+  ["--surface","#ffffff","Surface"],
+  ["--surface-muted","#f7f7f8","Surface · Muted"],
+  ["--border","#e5e7eb","Border"],
+  ["--border-strong","#d4d4d8","Border · Strong"]
+];
+function renderSwatch(target, arr) {
+  const html = arr.map(([token, hex, name]) => `
+    <div class="ds-swatch">
+      <div class="chip" style="background: ${hex}; border-bottom: 1px solid rgba(0,0,0,0.04);"></div>
+      <div class="meta">
+        <div class="name">${name}</div>
+        <div class="value">${token} · ${hex}</div>
+      </div>
+    </div>`).join("");
+  document.getElementById(target).innerHTML = html;
+}
+renderSwatch("sw-neutral", NEUTRAL);
+renderSwatch("sw-semantic", SEMANTIC);
+renderSwatch("sw-surface", SURFACE);
+
+/* =========================================================
+   Tables — data
+   ========================================================= */
+const HOME_ROWS = [
+  ["Weekly Inventory","WIR2024001","Jan 15, 2025","","Distribution Center A","42","$125.5K","2,847 units"],
+  ["Seasonal Refresh","SPR2024002","Jan 14, 2025","","Distribution Center A","42","$125.5K","2,847 units"],
+  ["Emergency Transfer","EST2024003","Jan 14, 2025","Sarah","Distribution Center B","38","$98.2K","1,952 units"],
+  ["Chain Update","MSC2024004","Jan 13, 2025","","Distribution Center A","42","$125.5K","2,847 units"],
+  ["High Priority Restock","HPR2024005","Jan 13, 2025","","Distribution Center C","56","$187.3K","3,421 units"],
+  ["Quarterly Inventory Balance","QIB2024006","Jan 12, 2025","","Distribution Center A","42","$125.5K","2,847 units"],
+  ["Regional Store Replenishment","RSR2024007","Jan 12, 2025","","Distribution Center B","38","$98.2K","1,952 units"],
+  ["Fast Moving Items Restock","FMI2024008","Jan 11, 2025","","Distribution Center A","42","$125.5K","2,847 units"]
+];
+function renderHomeTable(id) {
+  const tbody = document.getElementById(id);
+  if (!tbody) return;
+  tbody.innerHTML = HOME_ROWS.map(r => `
+    <tr>
+      <td><div>${r[0]}</div><div class="mono">${r[1]}</div></td>
+      <td>${r[2]}${r[3] ? `<div class="mono">${r[3]}</div>` : ""}</td>
+      <td>${r[4]}</td>
+      <td>${r[5]}</td>
+      <td>${r[6]}</td>
+      <td>${r[7]}</td>
+    </tr>`).join("");
+}
+renderHomeTable("home-table");
+renderHomeTable("demo-table");
+
+const STEP3_ROWS = [
+  ["sneaker","Classic White Sneakers","SN-2024-WHT-001","245 units","0 in transit","2% below target",12,"12 in Warehouse","0% below target","warn"],
+  ["bag","Leather Crossbody Bag","BAG-2024-BRN-045","156 units","0 in transit","82% below target",1820,"","71% below target","warn"],
+  ["watch","Minimalist Watch","WTH-2024-SLV-023","89 units","0 in transit","78% below target",1820,"","60% below target","warn"],
+  ["backpack","Canvas Backpack","BKP-2024-NVY-067","134 units","0 in transit","23% below target",1820,"","20% below target","warn"]
+];
+function renderStep3() {
+  const tbody = document.getElementById("step3-table");
+  if (!tbody) return;
+  tbody.innerHTML = STEP3_ROWS.map(r => `
+    <tr>
+      <td><input type="checkbox" class="chk"/></td>
+      <td>
+        <div style="display:flex; align-items:center; gap: 12px;">
+          <div class="thumb ${r[0]}"></div>
+          <div>
+            <div>${r[1]}</div>
+            <div class="mono">${r[2]}</div>
+          </div>
+        </div>
+      </td>
+      <td><div>${r[3]}</div><div class="muted">${r[4]}</div></td>
+      <td>${r[5]}</td>
+      <td>
+        <div style="display:flex; align-items:center; gap: 6px;">
+          <span class="qty-chip">${r[6]}</span>
+          <span class="muted">units</span>
+        </div>
+        ${r[7] ? `<div class="warn" style="font-size: var(--fs-sm); margin-top: 4px;">${r[7]}</div>` : ""}
+      </td>
+      <td class="${r[9] === "warn" ? "warn" : ""}">${r[8]}</td>
+    </tr>`).join("");
+}
+renderStep3();
+
+/* =========================================================
+   Interactive bits
+   ========================================================= */
+// Tabs (in showcase)
+document.querySelectorAll('[data-component="tabs"] .tab').forEach(t => {
+  t.addEventListener("click", () => {
+    t.parentElement.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
+    t.classList.add("active");
+    const state = document.getElementById("tab-state");
+    if (state) state.innerHTML = `Active tab: <code>${t.dataset.tab}</code>`;
+  });
+});
+// Day dots
+document.querySelectorAll('[data-component="days"] .dot').forEach(d => {
+  d.addEventListener("click", () => d.classList.toggle("active"));
+});
+// Segmented
+document.querySelectorAll('[data-component="run-when"] .seg-option').forEach(s => {
+  s.addEventListener("click", () => {
+    s.parentElement.querySelectorAll(".seg-option").forEach(x => x.classList.remove("selected"));
+    s.classList.add("selected");
+  });
+});
+// Screen day dots (all non-data-component rows too)
+document.querySelectorAll('.dot').forEach(d => {
+  if (d.closest('[data-component]')) return;
+  d.addEventListener("click", () => d.classList.toggle("active"));
+});
+// Screen segmented (all)
+document.querySelectorAll('.seg-option').forEach(s => {
+  if (s.closest('[data-component]')) return;
+  s.addEventListener("click", () => {
+    s.parentElement.querySelectorAll('.seg-option').forEach(x => x.classList.remove('selected'));
+    s.classList.add('selected');
+  });
+});
+// Screen tabs
+document.querySelectorAll('.tabs .tab').forEach(t => {
+  if (t.closest('[data-component]')) return;
+  t.addEventListener("click", () => {
+    t.parentElement.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+  });
+});
+// Rail buttons
+document.querySelectorAll('.app-rail .rail-btn, .ds-panel .rail-btn').forEach(r => {
+  r.addEventListener("click", () => {
+    r.parentElement.querySelectorAll('.rail-btn').forEach(x => x.classList.remove('active'));
+    r.classList.add('active');
+  });
+});
+
+/* =========================================================
+   Scrollspy — sidebar active link
+   ========================================================= */
+const navLinks = Array.from(document.querySelectorAll('.ds-nav a'));
+const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+function onScroll() {
+  const y = window.scrollY + 120;
+  let current = sections[0];
+  sections.forEach(s => { if (s && s.offsetTop <= y) current = s; });
+  if (!current) return;
+  navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current.id));
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+document.addEventListener('DOMContentLoaded', onScroll);
+// Also run on load in case DOMContentLoaded has fired already
+onScroll();
+</script>
+</body>
+</html>
