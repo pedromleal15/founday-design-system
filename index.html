@@ -483,6 +483,155 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   .ds-sidebar { position: static; height: auto; }
   .ds-main { padding: var(--s-6); }
 }
+
+/* =========================================================
+   Motion — subtle, meaningful micro-interactions
+   ========================================================= */
+html { scroll-behavior: smooth; }
+
+/* Scroll reveal: sections fade + lift on enter */
+.ds-section {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 500ms var(--ease-out),
+    transform 500ms var(--ease-out);
+  will-change: opacity, transform;
+}
+.ds-section.is-visible { opacity: 1; transform: none; }
+
+/* Panel hover: subtle lift + shadow deepen — conveys "interactive surface" */
+.ds-panel {
+  transition:
+    transform 200ms var(--ease-out),
+    box-shadow 200ms var(--ease-out),
+    border-color 200ms var(--ease-out);
+}
+.ds-panel:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-strong);
+}
+
+/* Button press: tactile compression */
+.btn { transform-origin: center; }
+.btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+.btn:active { transform: translateY(0) scale(0.98); }
+
+/* Brand mark: quiet scale on hover — signals brand identity */
+.ds-sidebar .brand { transition: transform 250ms var(--ease-out); }
+.ds-sidebar .brand:hover { transform: translateX(2px); }
+.ds-sidebar .brand-mark { transition: transform 300ms var(--ease-out); }
+.ds-sidebar .brand:hover .brand-mark { transform: rotate(-4deg) scale(1.05); }
+
+/* Sidebar nav: animated left indicator for active state */
+.ds-nav a {
+  position: relative;
+  transition:
+    background var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out),
+    padding var(--dur-base) var(--ease-out);
+}
+.ds-nav a::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  width: 2px;
+  height: 14px;
+  background: var(--accent);
+  border-radius: 2px;
+  transform: translateY(-50%) scaleY(0);
+  transform-origin: center;
+  transition: transform 220ms var(--ease-out);
+}
+.ds-nav a.active::before { transform: translateY(-50%) scaleY(1); }
+.ds-nav a.active { padding-left: 16px; }
+
+/* Hero title: word-by-word fade up on load */
+.title-reveal { display: inline-block; overflow: hidden; vertical-align: bottom; }
+.title-reveal .word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.4em);
+  animation: word-in 600ms var(--ease-out) forwards;
+}
+@keyframes word-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Hero badges: staggered fade-in on load */
+#overview .ds-row .badge {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: chip-in 400ms var(--ease-out) forwards;
+}
+#overview .ds-row .badge:nth-child(1) { animation-delay: 280ms; }
+#overview .ds-row .badge:nth-child(2) { animation-delay: 340ms; }
+#overview .ds-row .badge:nth-child(3) { animation-delay: 400ms; }
+#overview .ds-row .badge:nth-child(4) { animation-delay: 460ms; }
+#overview .ds-row .badge:nth-child(5) { animation-delay: 520ms; }
+@keyframes chip-in {
+  to { opacity: 1; transform: none; }
+}
+
+/* Section title: accent underline draws in when section becomes visible */
+.ds-section > header > h2 {
+  position: relative;
+  display: inline-block;
+}
+.ds-section > header > h2::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -6px;
+  height: 2px; width: 32px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 500ms var(--ease-out) 150ms;
+}
+.ds-section.is-visible > header > h2::after { transform: scaleX(1); }
+
+/* Swatch & radius tiles: quiet hover — affordance without noise */
+.ds-swatch-grid > *,
+.ds-radius-grid > *,
+.ds-shadow-grid > * {
+  transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+}
+.ds-swatch-grid > *:hover,
+.ds-radius-grid > *:hover,
+.ds-shadow-grid > *:hover {
+  transform: translateY(-2px);
+}
+
+/* Screen frames: gentle lift so they feel like artifacts */
+.screen-frame { transition: transform 300ms var(--ease-out), box-shadow 300ms var(--ease-out); }
+.screen-frame:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+/* Reduced motion: respect user preference, strip all motion */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .ds-section,
+  .ds-section.is-visible,
+  .ds-panel,
+  .btn,
+  .ds-sidebar .brand,
+  .ds-sidebar .brand-mark,
+  .ds-nav a,
+  .ds-nav a::before,
+  .ds-section > header > h2::after,
+  .screen-frame,
+  .ds-swatch-grid > *,
+  .ds-radius-grid > *,
+  .ds-shadow-grid > * {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  .title-reveal .word,
+  #overview .ds-row .badge { opacity: 1 !important; transform: none !important; animation: none !important; }
+}
 </style>
 </head>
 <body>
@@ -1368,6 +1517,50 @@ window.addEventListener('scroll', onScroll, { passive: true });
 document.addEventListener('DOMContentLoaded', onScroll);
 // Also run on load in case DOMContentLoaded has fired already
 onScroll();
+
+/* =========================================================
+   Motion — scroll reveal + hero text split
+   Respect prefers-reduced-motion.
+   ========================================================= */
+(function () {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const allSections = document.querySelectorAll('.ds-section');
+
+  if (prefersReduced) {
+    allSections.forEach(s => s.classList.add('is-visible'));
+    return;
+  }
+
+  // Split hero h2 into words for staggered reveal
+  const heroHeading = document.querySelector('#overview > header > h2');
+  if (heroHeading && !heroHeading.dataset.split) {
+    const words = heroHeading.textContent.trim().split(/\s+/);
+    heroHeading.innerHTML = '<span class="title-reveal">' +
+      words.map((w, i) =>
+        `<span class="word" style="animation-delay:${80 + i * 60}ms">${w}</span>`
+      ).join(' ') +
+      '</span>';
+    heroHeading.dataset.split = '1';
+  }
+
+  // IntersectionObserver — reveal sections as they enter viewport
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    allSections.forEach(s => io.observe(s));
+    // Overview should appear immediately on load
+    const overview = document.getElementById('overview');
+    if (overview) overview.classList.add('is-visible');
+  } else {
+    allSections.forEach(s => s.classList.add('is-visible'));
+  }
+})();
 </script>
 </body>
 </html>
