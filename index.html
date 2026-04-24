@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,9 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
 /* =========================================================
-   FOUNDATIONS — Tokens extraídos do Figma (Founday)
+   FOUNDATIONS — Tokens extracted from Figma (Founday)
    Source of truth: confirmed #0a0a0a, #717182, #e5e7eb (shadcn-like)
-   + inspeção visual dos 4 screens (Home, Step 1, Step 2, Step 3)
+   + visual inspection of the 4 screens (Home, Step 1, Step 2, Step 3)
    ========================================================= */
 :root {
   /* Color — neutral scale */
@@ -544,9 +544,9 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
       <header>
         <h2>Founday Design System</h2>
         <p class="lead">
-          Sistema de design interativo extraído do arquivo Figma <span class="ds-kbd">W32edVsk3tnXN7dFKF0lvE</span>
-          via MCP. Cobre foundations, componentes e os 4 fluxos do módulo <strong>Replenishment</strong> —
-          prontos para handoff e implementação.
+          Interactive design system extracted from the Figma file <span class="ds-kbd">W32edVsk3tnXN7dFKF0lvE</span>
+          via MCP. Covers foundations, components and the 4 flows of the <strong>Replenishment</strong> module —
+          ready for handoff and implementation.
         </p>
       </header>
 
@@ -559,32 +559,32 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
       </div>
 
       <div class="ds-panel" style="margin-top: var(--s-6);">
-        <h4>Objetivos</h4>
+        <h4>Goals</h4>
         <ul style="margin: 0; padding-left: 18px; color: var(--neutral-700); line-height: 1.7;">
-          <li>Consolidar a linguagem visual do Founday em tokens reutilizáveis.</li>
-          <li>Reduzir retrabalho entre Design e Eng com especificação executável (HTML + CSS vars).</li>
-          <li>Servir de referência para auditorias heurísticas, critiques e onboarding de novos designers.</li>
+          <li>Consolidate Founday's visual language into reusable tokens.</li>
+          <li>Reduce rework between Design and Eng with an executable specification (HTML + CSS vars).</li>
+          <li>Serve as a reference for heuristic audits, critiques and onboarding of new designers.</li>
         </ul>
       </div>
     </section>
 
     <section id="principles" class="ds-section">
       <header>
-        <h2>Princípios</h2>
-        <p class="lead">Clareza, hierarquia e densidade de dados — nessa ordem.</p>
+        <h2>Principles</h2>
+        <p class="lead">Clarity, hierarchy and data density — in that order.</p>
       </header>
       <div class="ds-swatch-grid">
         <div class="ds-panel">
-          <h4>01 · Clareza antes de decoração</h4>
-          <p class="muted" style="margin: 0; font-size: var(--fs-sm);">Tipografia neutra, paleta monocromática, acentos funcionais. Cor significa estado, não estilo.</p>
+          <h4>01 · Clarity before decoration</h4>
+          <p class="muted" style="margin: 0; font-size: var(--fs-sm);">Neutral typography, monochromatic palette, functional accents. Color means state, not style.</p>
         </div>
         <div class="ds-panel">
-          <h4>02 · Densidade com respiro</h4>
-          <p class="muted" style="margin: 0; font-size: var(--fs-sm);">Tabelas densas (row 56px), cards com padding 24px. Users fazem muita leitura scan — preserve quiet zones.</p>
+          <h4>02 · Density with breathing room</h4>
+          <p class="muted" style="margin: 0; font-size: var(--fs-sm);">Dense tables (row 56px), cards with 24px padding. Users do a lot of scan reading — preserve quiet zones.</p>
         </div>
         <div class="ds-panel">
-          <h4>03 · Ação sempre visível</h4>
-          <p class="muted" style="margin: 0; font-size: var(--fs-sm);">CTAs primários em preto sólido, sempre no canto superior direito. Uma única ação primária por tela.</p>
+          <h4>03 · Action always visible</h4>
+          <p class="muted" style="margin: 0; font-size: var(--fs-sm);">Primary CTAs in solid black, always in the top-right corner. A single primary action per screen.</p>
         </div>
       </div>
     </section>
@@ -593,7 +593,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
     <section id="colors" class="ds-section">
       <header>
         <h2>Colors</h2>
-        <p class="lead">Paleta neutra com acentos funcionais. Base confirmada no Figma: <code>#0a0a0a</code>, <code>#717182</code>, <code>#e5e7eb</code>.</p>
+        <p class="lead">Neutral palette with functional accents. Base confirmed in Figma: <code>#0a0a0a</code>, <code>#717182</code>, <code>#e5e7eb</code>.</p>
       </header>
 
       <h4>Neutral</h4>
@@ -609,7 +609,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
     <section id="typography" class="ds-section">
       <header>
         <h2>Typography</h2>
-        <p class="lead">Inter 400/500/600. Escala apertada (12 → 32), line-height generoso para leitura longa.</p>
+        <p class="lead">Inter 400/500/600. Tight scale (12 → 32), generous line-height for long reading.</p>
       </header>
       <div class="ds-panel">
         <div class="ds-type-row"><div><div class="ds-type-meta">display / 32 · 40 · 600</div></div><div style="font-size: 32px; line-height: 40px; font-weight: 600;">Fall Season 2024</div></div>
@@ -626,7 +626,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
     <section id="spacing" class="ds-section">
       <header>
         <h2>Spacing</h2>
-        <p class="lead">Grid de 4pt. Use os tokens, nunca valores avulsos.</p>
+        <p class="lead">4pt grid. Use tokens, never arbitrary values.</p>
       </header>
       <div class="ds-panel">
         <div class="ds-space-row"><code>--s-1 · 4px</code><div class="ds-space-bar" style="width: 4px;"></div></div>
@@ -640,13 +640,13 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
         <div class="ds-space-row"><code>--s-12 · 48px</code><div class="ds-space-bar" style="width: 48px;"></div></div>
         <div class="ds-space-row"><code>--s-16 · 64px</code><div class="ds-space-bar" style="width: 64px;"></div></div>
       </div>
-      <p class="ds-panel-caption">Padding de card = <code>--s-6</code>. Gap entre seções = <code>--s-8</code>. Gutter de grid = <code>--s-6</code>.</p>
+      <p class="ds-panel-caption">Card padding = <code>--s-6</code>. Gap between sections = <code>--s-8</code>. Grid gutter = <code>--s-6</code>.</p>
     </section>
 
     <section id="radius" class="ds-section">
       <header>
         <h2>Radius</h2>
-        <p class="lead">Suaves. <code>4–12px</code> para elementos, <code>full</code> para avatars e dots.</p>
+        <p class="lead">Smooth. <code>4–12px</code> for elements, <code>full</code> for avatars and dots.</p>
       </header>
       <div class="ds-radius-grid">
         <div class="ds-radius-box"><div class="b" style="border-radius: 4px;"></div><div class="label">--r-sm · 4</div></div>
@@ -661,7 +661,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
     <section id="shadows" class="ds-section">
       <header>
         <h2>Elevation</h2>
-        <p class="lead">Quatro níveis. Superfícies base ficam no <em>xs</em>; popovers usam <em>lg</em>.</p>
+        <p class="lead">Four levels. Base surfaces use <em>xs</em>; popovers use <em>lg</em>.</p>
       </header>
       <div class="ds-shadow-grid">
         <div class="ds-shadow-box" style="box-shadow: var(--shadow-xs);">shadow-xs</div>
@@ -674,7 +674,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
     <section id="icons" class="ds-section">
       <header>
         <h2>Icons</h2>
-        <p class="lead">Stroke 1.5, cantos arredondados, tamanhos 14/16/20. Fonte: Lucide (feather-like).</p>
+        <p class="lead">Stroke 1.5, rounded corners, sizes 14/16/20. Source: Lucide (feather-like).</p>
       </header>
       <div class="ds-panel">
         <div class="ds-row" style="gap: var(--s-6);">
@@ -698,7 +698,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 
     <!-- ====== COMPONENTS ====== -->
     <section id="c-button" class="ds-section">
-      <header><h2>Button</h2><p class="lead">Três variants: primary (preto), secondary (bordada), ghost. Tamanhos sm / md / lg.</p></header>
+      <header><h2>Button</h2><p class="lead">Three variants: primary (black), secondary (outlined), ghost. Sizes sm / md / lg.</p></header>
 
       <div class="ds-panel">
         <h4>Variants</h4>
@@ -726,7 +726,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
     </section>
 
     <section id="c-input" class="ds-section">
-      <header><h2>Input & Field</h2><p class="lead">Altura 36, radius 8, borda sutil. Estado de foco com ring azul.</p></header>
+      <header><h2>Input & Field</h2><p class="lead">Height 36, radius 8, subtle border. Focus state with blue ring.</p></header>
       <div class="ds-panel">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-6); max-width: 720px;">
           <div class="field">
@@ -758,7 +758,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
     </section>
 
     <section id="c-select" class="ds-section">
-      <header><h2>Select</h2><p class="lead">Mesma altura do input. Background muted quando inativo (cf. Repeats, Facility Type).</p></header>
+      <header><h2>Select</h2><p class="lead">Same height as input. Muted background when inactive (cf. Repeats, Facility Type).</p></header>
       <div class="ds-panel">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-6); max-width: 720px;">
           <div class="field">
@@ -785,7 +785,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
     </section>
 
     <section id="c-badge" class="ds-section">
-      <header><h2>Badge</h2><p class="lead">Pílulas para contagem, status e indicadores inline.</p></header>
+      <header><h2>Badge</h2><p class="lead">Pills for count, status and inline indicators.</p></header>
       <div class="ds-panel">
         <div class="ds-row">
           <span class="badge badge-neutral">Default</span>
@@ -798,7 +798,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
     </section>
 
     <section id="c-segmented" class="ds-section">
-      <header><h2>Segmented / Day Picker</h2><p class="lead">Dois controles compactos usados no formulário de agendamento.</p></header>
+      <header><h2>Segmented / Day Picker</h2><p class="lead">Two compact controls used in the scheduling form.</p></header>
       <div class="ds-panel">
         <h4>Segmented — Run request</h4>
         <div class="segmented" style="max-width: 520px;" data-component="run-when">
@@ -820,7 +820,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
     </section>
 
     <section id="c-tabs" class="ds-section">
-      <header><h2>Tabs</h2><p class="lead">Indicador com underline azul. Estado <em>active</em> em peso semibold.</p></header>
+      <header><h2>Tabs</h2><p class="lead">Indicator with blue underline. <em>Active</em> state in semibold weight.</p></header>
       <div class="ds-panel">
         <div class="tabs" data-component="tabs">
           <button class="tab active" data-tab="ongoing">Ongoing</button>
@@ -828,12 +828,12 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
           <button class="tab" data-tab="submitted">Submitted</button>
           <button class="tab" data-tab="archived">Archived</button>
         </div>
-        <p class="muted" style="font-size: var(--fs-sm); margin-top: var(--s-4);" id="tab-state">Active tab: <code>ongoing</code>. Clique nos tabs para alternar.</p>
+        <p class="muted" style="font-size: var(--fs-sm); margin-top: var(--s-4);" id="tab-state">Active tab: <code>ongoing</code>. Click tabs to switch.</p>
       </div>
     </section>
 
     <section id="c-card" class="ds-section">
-      <header><h2>Card</h2><p class="lead">Container base de qualquer conteúdo — radius 12, border sutil, padding 24.</p></header>
+      <header><h2>Card</h2><p class="lead">Base container for any content — radius 12, subtle border, padding 24.</p></header>
       <div class="card" style="max-width: 680px;">
         <div class="card-hd">
           <div>
@@ -855,7 +855,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
     </section>
 
     <section id="c-table" class="ds-section">
-      <header><h2>Table</h2><p class="lead">Alta densidade, hover row, cabeçalho em caixa alta 12px.</p></header>
+      <header><h2>Table</h2><p class="lead">High density, hover row, uppercase 12px header.</p></header>
       <div class="card">
         <table class="table">
           <thead>
@@ -878,7 +878,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
     </section>
 
     <section id="c-nav" class="ds-section">
-      <header><h2>Nav Rail</h2><p class="lead">Barra lateral colapsada — 72px. Ícone ativo em badge azul claro.</p></header>
+      <header><h2>Nav Rail</h2><p class="lead">Collapsed sidebar — 72px. Active icon in light blue badge.</p></header>
       <div class="ds-panel" style="padding: 0; overflow: hidden;">
         <div style="display:flex;">
           <aside class="app-rail" style="height: 420px;">
@@ -893,7 +893,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
             </div>
           </aside>
           <div style="flex:1; padding: var(--s-6); color: var(--neutral-500); font-size: var(--fs-sm);">
-            <strong>Anatomy:</strong> largura 72px · padding vertical 16px · item 40×40 radius 8 · active state <code>--accent-soft</code> + ícone <code>--accent</code>. Separação entre top-group e avatar com <code>justify-content: space-between</code>.
+            <strong>Anatomy:</strong> width 72px · vertical padding 16px · item 40×40 radius 8 · active state <code>--accent-soft</code> + icon <code>--accent</code>. Separation between top-group and avatar with <code>justify-content: space-between</code>.
           </div>
         </div>
       </div>
@@ -901,7 +901,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 
     <!-- ====== SCREENS ====== -->
     <section id="s-home" class="ds-section">
-      <header><h2>Screen · Replenishment (Home)</h2><p class="lead">Lista de solicitações com tabs de status, search e CTA primário.</p></header>
+      <header><h2>Screen · Replenishment (Home)</h2><p class="lead">Request list with status tabs, search and primary CTA.</p></header>
       <div class="app-frame">
         <aside class="app-rail">
           <div class="rail-group">
@@ -952,7 +952,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
     </section>
 
     <section id="s-step1" class="ds-section">
-      <header><h2>Screen · Step 1 · New Replenishment</h2><p class="lead">Formulário de agendamento com scope seletivo.</p></header>
+      <header><h2>Screen · Step 1 · New Replenishment</h2><p class="lead">Scheduling form with selective scope.</p></header>
       <div class="app-frame">
         <aside class="app-rail">
           <div class="rail-group">
@@ -1043,7 +1043,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
     </section>
 
     <section id="s-step2" class="ds-section">
-      <header><h2>Screen · Step 2 · Configuration Setup</h2><p class="lead">Seleciona warehouse primário, cobertura geográfica e produtos.</p></header>
+      <header><h2>Screen · Step 2 · Configuration Setup</h2><p class="lead">Selects primary warehouse, geographic coverage and products.</p></header>
       <div class="app-frame">
         <aside class="app-rail">
           <div class="rail-group">
@@ -1099,7 +1099,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
     </section>
 
     <section id="s-step3" class="ds-section">
-      <header><h2>Screen · Step 3 · Review & Submit</h2><p class="lead">Tela de revisão com coverage pre/pós replenishment.</p></header>
+      <header><h2>Screen · Step 3 · Review & Submit</h2><p class="lead">Review screen with pre/post replenishment coverage.</p></header>
       <div class="app-frame">
         <aside class="app-rail">
           <div class="rail-group">
@@ -1153,7 +1153,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 
     <section class="ds-section" style="margin-bottom: 48px;">
       <div class="ds-note">
-        <strong>Fonte dos tokens:</strong> Figma MCP (<code>W32edVsk3tnXN7dFKF0lvE</code>) — 4 top-level frames analisados (1:112 Home, 1:2 Step 1, 1:405 Step 2, 1:513 Step 3) + 1 symbol (Menu, 1:377). Vocabulário shadcn/radix detectado. Cores base confirmadas: <code>#0a0a0a</code>, <code>#717182</code>, <code>#e5e7eb</code>. Paleta semântica inferida pelos screenshots (warning, accent, success).
+        <strong>Token source:</strong> Figma MCP (<code>W32edVsk3tnXN7dFKF0lvE</code>) — 4 top-level frames analyzed (1:112 Home, 1:2 Step 1, 1:405 Step 2, 1:513 Step 3) + 1 symbol (Menu, 1:377). shadcn/radix vocabulary detected. Base colors confirmed: <code>#0a0a0a</code>, <code>#717182</code>, <code>#e5e7eb</code>. Semantic palette inferred from screenshots (warning, accent, success).
       </div>
     </section>
 
@@ -1162,7 +1162,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 
 <script>
 /* =========================================================
-   Icons (Lucide-style, inline SVG — só os usados)
+   Icons (Lucide-style, inline SVG — only the ones used)
    ========================================================= */
 const ICONS = {
   "home":    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1V9.5Z"/></svg>',
@@ -1307,7 +1307,7 @@ document.querySelectorAll('[data-component="tabs"] .tab').forEach(t => {
     t.parentElement.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
     t.classList.add("active");
     const state = document.getElementById("tab-state");
-    if (state) state.innerHTML = `Active tab: <code>${t.dataset.tab}</code>`;
+    if (state) state.innerHTML = `Active tab: <code>${t.dataset.tab}</code>. Click tabs to switch.`;
   });
 });
 // Day dots
